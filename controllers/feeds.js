@@ -10,7 +10,7 @@ function add (req,res,next) {
         if(!date.isValid()) return next({code:400,message:"Error en la fecha, debe tener el formato YYYY-MM-DD"});
     }
     
-    let feed = new Feed({titulo:req.body.titulo,cuerpo:req.body.cuerpo,fecha:req.body.fecha});
+    let feed = new Feed({titulo:req.body.titulo,cuerpo:req.body.cuerpo,fecha:req.body.fecha,type:'custom',enlace:req.body.enlace});
     
     feed.save().then(feed => {
     
@@ -19,7 +19,20 @@ function add (req,res,next) {
     .catch(next);
 }
 
+function get (req,res,next) {
+    
+    let params = {type:req.params.type};
+    
+    if(req.params.type != 'mundo' && req.params.type != 'pais' && req.params.type != 'custom') params = {};
+    
+    Feed.find(params).then(results => {
+        
+        next({code:200,message:results});
+    });
+}
+
 module.exports = {
     
+    get,
     add
 }
