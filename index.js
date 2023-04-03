@@ -1,3 +1,4 @@
+var scraping = require("./services/scraping");
 var CronJob = require("cron").CronJob;
 var mongoose = require('mongoose');
 var config = require("./config");
@@ -12,9 +13,9 @@ app.listen(config.port, () => {
         console.log("--------------------- MONGO DB CONNECTED ---------------------");
     });
 });
-
-
     
-// new CronJob("0 0 0 * * *", () => {
-// 
-// }).start();
+new CronJob("0 0 0 * * *", () => {
+    
+    scraping.start();
+    
+}).start();

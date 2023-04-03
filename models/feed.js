@@ -5,6 +5,8 @@ var FeedSchema = new mongoose.Schema({
     
     titulo : {type: String},
     cuerpo:  {type: String},
+    type:    {type: String},
+    enlace:  {type: String},
     fecha :  {type: Date, default: Date.now()}
 });
 
