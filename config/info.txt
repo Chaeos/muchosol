@@ -1,0 +1,2 @@
+1.- Los datos para añadir la Feed se mandan por JSON.
+2.- Para hacer el PUT se necesita enviar un token correcto de JWT, si no dará error de permisos (es solo para prueba y usar un middleware). EJ: "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.IntVc2VyOjEyM30i.eRn39Ul0TNotORfBHn-0kcBlpFapHzEhAyS5sOLTPEU".
