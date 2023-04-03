@@ -1,7 +1,6 @@
-var mongoose = require('mongoose');
-var config = require('../config');
+import mongoose from "mongoose";
 
-var FeedSchema = new mongoose.Schema({
+const FeedSchema = new mongoose.Schema({
     
     titulo : {type: String},
     cuerpo:  {type: String},
@@ -10,4 +9,4 @@ var FeedSchema = new mongoose.Schema({
     fecha :  {type: Date, default: Date.now()}
 });
 
-module.exports = mongoose.model('Feed', FeedSchema);
+export const Feed = mongoose.model('Feed', FeedSchema);

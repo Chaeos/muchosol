@@ -1,12 +1,13 @@
-var Feed = require("../models/feed");
-var puppeteer = require('puppeteer');
-var moment = require("moment");
-var jsdom = require('jsdom');
+import puppeteer from "puppeteer";
+import moment from "moment";
+import jsdom from "jsdom";
+
+import { Feed } from "../models/feed";
 
 class Web {
 
-    #noticias = [];
-    #type = "";
+    #noticias:any = [];
+    #type:string = "";
 
     constructor(type) {
         
@@ -23,12 +24,19 @@ class Web {
                     
                     page.goto(url).then(result => {
                         
-                        result.text().then(body => {
+                        if(result) {
+                        
+                            result.text().then(body => {
+                                
+                                resolve(body);
+                                
+                                browser.close();
+                            });
+                        }
+                        else {
                             
-                            resolve(body);
-                            
-                            browser.close();
-                        });
+                            reject();
+                        }
                     });
                 });
             });
@@ -45,7 +53,7 @@ class Web {
         return new Promise((resolve, reject) => {
             
             let fecha = moment().format('YYYY-MM-DD');
-            let promises = [];
+            let promises:any = [];
             
             Feed.deleteMany({fecha:fecha,type:this.#type}).then(() => {
             
@@ -58,7 +66,7 @@ class Web {
                 
                 Promise.all(promises).then(res => {
                     
-                    resolve();
+                    resolve(true);
                 });
             });
         });
@@ -78,15 +86,15 @@ class elMundo extends Web {
         
         return new Promise((resolve, reject) => {
                 
-            super.extraer(url).then(body => {
+            this.extraer(url).then(body => {
                 
                 var { window: { document } } = new jsdom.JSDOM(body);
                 
                 let titulo = document.querySelector("h1.ue-c-article__headline").innerHTML;
                 let cuerpo = document.querySelector("div.ue-c-article__body").innerHTML;
                 
-                super.addNoticia(titulo,cuerpo,url);
-                resolve();
+                this.addNoticia(titulo,cuerpo,url);
+                resolve(true);
             });
         });
     }
@@ -95,13 +103,13 @@ class elMundo extends Web {
         
         return new Promise((resolve, reject) => {
             
-            super.extraer(this.#url).then(body => {
+            this.extraer(this.#url).then(body => {
 
                 var { window: { document } } = new jsdom.JSDOM(body);
                 
                 var urls = [...document.querySelector("div[data-b-name=ad_news_a]").querySelectorAll("article>a")].map(a=>{return a.href});
                 
-                let promises = [];
+                let promises:any = [];
                 
                 for(let i = 0;i<urls.length;i++) {
                     
@@ -110,7 +118,7 @@ class elMundo extends Web {
                 
                 Promise.all(promises).then(res => {
                     
-                    resolve();
+                    resolve(true);
                 });
             });
         });
@@ -130,15 +138,15 @@ class elPais extends Web {
         
         return new Promise((resolve, reject) => {
                 
-            super.extraer(url).then(body => {
+            this.extraer(url).then(body => {
                 
                 var { window: { document } } = new jsdom.JSDOM(body);
                 
                 let titulo = document.querySelector("h1").innerHTML;
                 let cuerpo = document.querySelector("article [data-dtm-region=articulo_cuerpo]").innerHTML;
                 
-                super.addNoticia(titulo,cuerpo,url);
-                resolve();
+                this.addNoticia(titulo,cuerpo,url);
+                resolve(true);
             });
         });
     }
@@ -147,13 +155,13 @@ class elPais extends Web {
         
         return new Promise((resolve, reject) => {
             
-            super.extraer(this.#url).then(body => {
+            this.extraer(this.#url).then(body => {
 
                 var { window: { document } } = new jsdom.JSDOM(body);
                 
                 var urls = [...document.querySelector("section[data-dtm-region=portada_apertura]").querySelectorAll("article>header>h2>a")].map(a=>{return a.href});
                 
-                let promises = [];
+                let promises:any[] = [];
                 
                 for(let i = 0;i<urls.length;i++) {
                     
@@ -162,7 +170,7 @@ class elPais extends Web {
                 
                 Promise.all(promises).then(res => {
                     
-                    resolve();
+                    resolve(true);
                 });
             });
         });
@@ -186,7 +194,7 @@ function start () {
     });
 }
 
-module.exports = {
+export default {
     
     start
-};
+}

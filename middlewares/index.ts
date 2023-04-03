@@ -1,4 +1,4 @@
-var token = require('../services/token');
+import token from "../services/token";
 
 function isAuth (req,res,next) {
     
@@ -7,14 +7,14 @@ function isAuth (req,res,next) {
         return next({code:403,message:"Permisos insuficientes"});
     }
     
-    token.decode(req.headers.authorization).then(response => {
+    token.decodeJWT(req.headers.authorization).then(response => {
         
         next();
     })
     .catch(next);
 }
 
-module.exports = {
+export default {
     
     isAuth
 }

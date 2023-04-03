@@ -1,5 +1,5 @@
-var Feed = require("../models/feed");
-var moment = require("moment");
+import { Feed } from "../models/feed";
+import moment from "moment";
 
 function add (req,res,next) {
 
@@ -21,9 +21,9 @@ function add (req,res,next) {
 
 function get (req,res,next) {
     
-    let params = {type:req.params.type};
+    let params = {};
     
-    if(req.params.type != 'mundo' && req.params.type != 'pais' && req.params.type != 'custom') params = {};
+    if(req.params.type == 'mundo' || req.params.type == 'pais' || req.params.type == 'custom') params = {type:req.params.type};
     
     Feed.find(params).then(results => {
         

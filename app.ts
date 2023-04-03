@@ -1,6 +1,7 @@
-var express = require("express");
-var cors = require("cors");
-var app = express();
+import express from "express";
+import cors from "cors";
+
+const app = express();
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -33,9 +34,9 @@ app.use((item, req, res, next) => {
     }
     catch (e) {
 
-        res.status(500).send('Internal Server Error');
+        res.sendStatus(500);
         console.log(item);
     }
 });
 
-module.exports = app;
+export default app;
